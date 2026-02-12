@@ -1,4 +1,5 @@
 
+#!/bin/bash
 # Запуск Docker Compose
 run_step "docker-compose build" "Запуск Docker Compose"
 
