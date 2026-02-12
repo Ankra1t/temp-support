@@ -18,14 +18,14 @@ class TelegramQuery
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            $receivedToken = $request->header('X-Telegram-Bot-Api-Secret-Token');
-            if (empty($receivedToken)) {
-                throw new Exception('Secret-Token is invalid!');
-            }
+            // $receivedToken = $request->header('X-Telegram-Bot-Api-Secret-Token');
+            // if (empty($receivedToken)) {
+            //     throw new Exception('Secret-Token is invalid!');
+            // }
 
-            if ($receivedToken !== config('traffic_source.settings.telegram.secret_key')) {
-                throw new Exception('Secret-Token is invalid!');
-            }
+            // if ($receivedToken !== config('traffic_source.settings.telegram.secret_key')) {
+            //     throw new Exception('Secret-Token is invalid!');
+            // }
 
             $this->sendRequestInLoki($request);
             return $next($request);
