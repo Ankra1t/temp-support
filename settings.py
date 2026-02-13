@@ -33,3 +33,12 @@ if (
 ):
     raise Exception("You need to specify 'PERSONAL_ACCOUNT_CHAT_ID' env variable.")
 PERSONAL_ACCOUNT_CHAT_ID = int(PERSONAL_ACCOUNT_CHAT_ID)
+
+# Database settings
+DATABASE_PATH = os.getenv("DATABASE_PATH", "bot_database.db")
+
+# Forum topic settings
+TOPIC_NAME_TEMPLATE = os.getenv(
+    "TOPIC_NAME_TEMPLATE",
+    "{first_name} {last_name} (@{username}) #{id}"
+)

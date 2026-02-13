@@ -19,31 +19,32 @@ async def main():
 
     # Register handlers
     application.add_handler(CommandHandler("start", start))
+
+    # Handler для сообщений от пользователей (private chat) - все типы
+    # НЕ обрабатываем сообщения из forum topics (они имеют message_thread_id)
     application.add_handler(
         MessageHandler(
-            filters.TEXT
-            & ~filters.COMMAND
-            & ~filters.Chat(
-                chat_id=[TELEGRAM_SUPPORT_CHAT_ID, PERSONAL_ACCOUNT_CHAT_ID]
-            ),
-            forward_to_group,
+            filters.ChatType.PRIVATE & ~filters.COMMAND,
+            forward_to_group
         )
     )
+
+    # Handler для ответов поддержки (из forum topics группы)
+    # Обрабатываем сообщения из группы, которые находятся в теме
     application.add_handler(
         MessageHandler(
-            filters.TEXT
-            & filters.Chat(chat_id=[TELEGRAM_SUPPORT_CHAT_ID, PERSONAL_ACCOUNT_CHAT_ID])
-            & filters.REPLY,
-            forward_to_user,
+            filters.Chat(chat_id=[TELEGRAM_SUPPORT_CHAT_ID, PERSONAL_ACCOUNT_CHAT_ID])
+            & ~filters.COMMAND,
+            forward_to_user
         )
     )
 
     logging.info("Handlers registered.")
 
-    # Set up signal handlers
-    loop = asyncio.get_running_loop()
-    for sig in (signal.SIGINT, signal.SIGTERM):
-        loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown(application)))
+    # # Set up signal handlers
+    # loop = asyncio.get_running_loop()
+    # for sig in (signal.SIGINT, signal.SIGTERM):
+    #     loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown(application)))
 
     # Start the bot
     await application.initialize()
