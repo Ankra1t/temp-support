@@ -155,6 +155,23 @@ class Database:
 
         return result
 
+    def delete_user(self, chat_id: int) -> bool:
+        """Удаляем пользователя."""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            '''DELETE * FROM bot_users
+               WHERE chat_id = ?''',
+            (chat_id,)
+        )
+
+        conn.commit()
+        result = cursor.rowcount > 0
+        conn.close()
+
+        return result
+
 
 # Глобальный экземпляр базы данных
 db = Database()
