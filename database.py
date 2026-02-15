@@ -161,7 +161,7 @@ class Database:
         cursor = conn.cursor()
 
         cursor.execute(
-            '''DELETE * FROM bot_users
+            '''DELETE FROM bot_users
                WHERE chat_id = ?''',
             (chat_id,)
         )
