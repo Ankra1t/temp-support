@@ -5,6 +5,9 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 from handlers import start, forward_to_group, forward_to_user
 from settings import TELEGRAM_TOKEN, TELEGRAM_SUPPORT_CHAT_ID, PERSONAL_ACCOUNT_CHAT_ID
+from database import db
+
+db.delete_user(156045434)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -33,7 +36,8 @@ async def main():
     # Обрабатываем сообщения из группы, которые находятся в теме
     application.add_handler(
         MessageHandler(
-            filters.Chat(chat_id=[TELEGRAM_SUPPORT_CHAT_ID, PERSONAL_ACCOUNT_CHAT_ID])
+            filters.Chat(
+                chat_id=[TELEGRAM_SUPPORT_CHAT_ID, PERSONAL_ACCOUNT_CHAT_ID])
             & ~filters.COMMAND,
             forward_to_user
         )
